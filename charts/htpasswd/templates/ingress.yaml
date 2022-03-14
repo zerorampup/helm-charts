@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.name }}
+type: Opaque
+data:
+  auth: {{ htpasswd .Values.username .Values.password }}
