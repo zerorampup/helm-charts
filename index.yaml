@@ -3,6 +3,16 @@ entries:
   htpasswd:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-03-15T00:17:00.327143184Z"
+    description: A Helm chart for Kubernetes
+    digest: 11374555df2793c93bdb4c9e3c34fe0c63a8e34807bc57a5dbecc92f3caea4d4
+    name: htpasswd
+    type: application
+    urls:
+    - https://github.com/zerorampup/helm-charts/releases/download/htpasswd-1.0.1/htpasswd-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-03-15T00:09:40.999091227Z"
     description: A Helm chart for Kubernetes
     digest: 6fa2654399e1abf7dd08f602af21017513702398fe4fbfa160d2d096e9f55190
@@ -32,4 +42,4 @@ entries:
     urls:
     - https://github.com/zerorampup/helm-charts/releases/download/mailserver-1.0.0/mailserver-1.0.0.tgz
     version: 1.0.0
-generated: "2022-03-15T00:09:40.999099227Z"
+generated: "2022-03-15T00:17:00.327188484Z"
