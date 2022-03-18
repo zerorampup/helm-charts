@@ -76,7 +76,7 @@ spec:
             - name: SMTP_HOSTNAME
               value: '{{ .Values.email.hostname }}'
             - name: SMTP_PORT
-              value: {{ .Values.email.port }}
+              value: '{{ .Values.email.port }}'
             - name: SMTP_USERNAME
               value: '{{ .Values.email.username }}'
             - name: SMTP_PASSWORD
