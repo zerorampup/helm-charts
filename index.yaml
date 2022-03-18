@@ -94,6 +94,16 @@ entries:
   ldap-user-manager:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-03-18T05:27:10.7166838Z"
+    description: A Helm chart for Kubernetes
+    digest: 1cb21866b8c9789d6598f0481b8b63ab06cd5debcefb80aae715b0c72c3e6401
+    name: ldap-user-manager
+    type: application
+    urls:
+    - https://github.com/zerorampup/helm-charts/releases/download/ldap-user-manager-0.0.2/ldap-user-manager-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-03-18T05:07:47.271241027Z"
     description: A Helm chart for Kubernetes
     digest: ba32d462babcac86616bd0adc4ade734a2c29863eea56864c3731f16cfe5a0bb
@@ -113,4 +123,4 @@ entries:
     urls:
     - https://github.com/zerorampup/helm-charts/releases/download/mailserver-1.0.0/mailserver-1.0.0.tgz
     version: 1.0.0
-generated: "2022-03-18T05:07:47.271287928Z"
+generated: "2022-03-18T05:27:10.7167609Z"
