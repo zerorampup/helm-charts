@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ldap-user-manager.fullname" . }}
+  labels:
+    {{- include "ldap-user-manager.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ldap-user-manager.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ldap-user-manager.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          env:
+            - name: LDAP_URI
+              value: '{{ .Values.ldap.uri }}'
+            - name: LDAP_BASE_DN
+              value: '{{ .Values.ldap.base_dn }}'
+            - name: LDAP_ADMIN_BIND_DN
+              value: '{{ .Values.ldap.admin_dn }}'
+            - name: LDAP_ADMIN_BIND_PWD
+              value: '{{ .Values.ldap.admin_dn }}'
+            - name: LDAP_ADMINS_GROUP
+              value: admins
+            - name: LDAP_REQUIRE_STARTTLS
+              value: 'false'
+            - name: LDAP_IGNORE_CERT_ERRORS
+              value: 'true'
+            - name: LDAP_DEBUG
+              value: 'true'
+            {{ if .Values.ingress.enabled }}
+            - name: SERVER_HOSTNAME
+              value: '{{ (first .Values.ingress.hosts).host }}'
+            {{ end }}
+            - name: ORGANIZATION_NAME
+              value: '{{ .Values.settings.organization_name }}'
+            - name: EMAIL_DOMAIN
+              value: '{{ .Values.email.domain }}'
+            - name: PASSWORD_HASH
+              value: '{{ .Values.settings.password_hash }}'
+            - name: USERNAME_FORMAT
+              value: '{{ .Values.settings.username_format }}'
+            - name: NO_HTTPS
+              value: "TRUE"
+            - name: SMTP_HOSTNAME
+              value: '{{ .Values.email.hostname }}'
+            - name: SMTP_PORT
+              value: {{ .Values.email.port }}
+            - name: SMTP_USERNAME
+              value: '{{ .Values.email.username }}'
+            - name: SMTP_PASSWORD
+              value: '{{ .Values.email.password }}'
+            - name: SMTP_USE_TLS
+              value: '{{ .Values.email.tls }}'
+            - name: SMTP_USE_SSL
+              value: '{{ .Values.email.tls }}'
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
