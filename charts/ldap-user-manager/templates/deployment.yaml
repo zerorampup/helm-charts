@@ -54,11 +54,11 @@ spec:
             - name: LDAP_ADMINS_GROUP
               value: admins
             - name: LDAP_REQUIRE_STARTTLS
-              value: 'false'
+              value: 'FALSE'
             - name: LDAP_IGNORE_CERT_ERRORS
-              value: 'true'
+              value: 'TRUE'
             - name: LDAP_DEBUG
-              value: 'true'
+              value: 'TRUE'
             {{ if .Values.ingress.enabled }}
             - name: SERVER_HOSTNAME
               value: '{{ (first .Values.ingress.hosts).host }}'

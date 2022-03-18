@@ -46,8 +46,8 @@ email:
   port: 25
   username: user
   password: password
-  tls: false
-  ssl: false
+  tls: "FALSE"
+  ssl: "FALSE"
 
 service:
   type: ClusterIP
