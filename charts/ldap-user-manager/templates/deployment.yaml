@@ -50,7 +50,7 @@ spec:
             - name: LDAP_ADMIN_BIND_DN
               value: '{{ .Values.ldap.admin_dn }}'
             - name: LDAP_ADMIN_BIND_PWD
-              value: '{{ .Values.ldap.admin_dn }}'
+              value: '{{ .Values.ldap.admin_pwd }}'
             - name: LDAP_ADMINS_GROUP
               value: admins
             - name: LDAP_REQUIRE_STARTTLS
