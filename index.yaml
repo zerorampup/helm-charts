@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  docker-mailserver:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-04-08T20:22:48.703109841Z"
+    description: A Helm chart for Kubernetes
+    digest: 658d047bc45e67d34cf05e3f6595de9f1cb050f4ba2a2442a1b3c353f98829cb
+    name: docker-mailserver
+    type: application
+    urls:
+    - https://github.com/zerorampup/helm-charts/releases/download/docker-mailserver-0.0.1/docker-mailserver-0.0.1.tgz
+    version: 0.0.1
   htpasswd:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -94,6 +105,16 @@ entries:
   ldap-user-manager:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-04-08T20:22:48.915248861Z"
+    description: A Helm chart for Kubernetes
+    digest: 5be1111dd41616b3f5e0a94affd27e972aca1661a1a7239e86e3138ff22b88fb
+    name: ldap-user-manager
+    type: application
+    urls:
+    - https://github.com/zerorampup/helm-charts/releases/download/ldap-user-manager-0.0.5/ldap-user-manager-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-03-18T06:07:50.280688394Z"
     description: A Helm chart for Kubernetes
     digest: 6f0d3a4497f72c8921a012e8b357612cfbe20baa3dc41c996298beb81b5138a7
@@ -143,4 +164,4 @@ entries:
     urls:
     - https://github.com/zerorampup/helm-charts/releases/download/mailserver-1.0.0/mailserver-1.0.0.tgz
     version: 1.0.0
-generated: "2022-03-18T06:07:50.280728698Z"
+generated: "2022-04-08T20:22:48.915330062Z"
