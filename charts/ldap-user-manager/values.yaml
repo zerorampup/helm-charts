@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: wheelybird/ldap-user-manager
+  repository: ldapaccountmanager/lam
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.7
+  tag: 7.9
 
 imagePullSecrets: []
 nameOverride: ""
@@ -37,17 +37,7 @@ ldap:
 
 settings:
   organization_name: example company
-  password_hash: SSHA
-  username_format: "{first_name_initial}{last_name}"
 
-email:
-  domain: example.com
-  hostname: example.email
-  port: 25
-  username: user
-  password: password
-  tls: "FALSE"
-  ssl: "FALSE"
 
 service:
   type: ClusterIP

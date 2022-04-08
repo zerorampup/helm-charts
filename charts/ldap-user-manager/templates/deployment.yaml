@@ -43,48 +43,28 @@ spec:
               path: /
               port: http
           env:
-            - name: LDAP_URI
+            - name: LAM_SKIP_PRECONFIGURE
+              value: "true"
+            - name: LDAP_SERVER
               value: '{{ .Values.ldap.uri }}'
             - name: LDAP_BASE_DN
               value: '{{ .Values.ldap.base_dn }}'
-            - name: LDAP_ADMIN_BIND_DN
+            - name: LDAP_USERS_DN
+              value: 'ou=users,{{ .Values.ldap.base_dn }}'
+            - name: LDAP_GROUPS_DN
+              value: 'ou=groups,{{ .Values.ldap.base_dn }}'
+            - name: LDAP_USER
               value: '{{ .Values.ldap.admin_dn }}'
-            - name: LDAP_ADMIN_BIND_PWD
+            - name: LAM_PASSWORD
               value: '{{ .Values.ldap.admin_pwd }}'
-            - name: LDAP_ADMINS_GROUP
-              value: admins
-            - name: LDAP_REQUIRE_STARTTLS
-              value: 'FALSE'
-            - name: LDAP_IGNORE_CERT_ERRORS
-              value: 'TRUE'
-            - name: LDAP_DEBUG
-              value: 'TRUE'
-            {{ if .Values.ingress.enabled }}
-            - name: SERVER_HOSTNAME
-              value: '{{ (first .Values.ingress.hosts).host }}'
-            {{ end }}
-            - name: ORGANIZATION_NAME
+            - name: LDAP_ADMIN_PASSWORD
+              value: '{{ .Values.ldap.admin_pwd }}'
+            - name: LDAP_READONLY_USER_PASSWORD
+              value: '{{ .Values.ldap.admin_pwd }}'
+            - name: LDAP_ORGANISATION
               value: '{{ .Values.settings.organization_name }}'
-            - name: EMAIL_DOMAIN
-              value: '{{ .Values.email.domain }}'
-            - name: PASSWORD_HASH
-              value: '{{ .Values.settings.password_hash }}'
-            - name: USERNAME_FORMAT
-              value: '{{ .Values.settings.username_format }}'
-            - name: NO_HTTPS
-              value: "TRUE"
-            - name: SMTP_HOSTNAME
-              value: '{{ .Values.email.hostname }}'
-            - name: SMTP_PORT
-              value: '{{ .Values.email.port }}'
-            - name: SMTP_USERNAME
-              value: '{{ .Values.email.username }}'
-            - name: SMTP_PASSWORD
-              value: '{{ .Values.email.password }}'
-            - name: SMTP_USE_TLS
-              value: '{{ .Values.email.tls }}'
-            - name: SMTP_USE_SSL
-              value: '{{ .Values.email.tls }}'
+            - name: DEBUG
+              value: "true"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

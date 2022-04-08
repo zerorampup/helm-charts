@@ -1,0 +1,7 @@
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: {{ include "docker-mailserver.fullname" . }}-dkim
+# type: Opaque
+# data:
+#   mail.private: {{ .Values.certificates.dkim.private | base64en | quote }}

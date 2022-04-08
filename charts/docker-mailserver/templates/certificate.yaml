@@ -1,0 +1,13 @@
+{{- if .Values.certificates.tls.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.general.override_domain }}
+spec:
+  secretName: {{ .Values.general.override_domain }}-tls
+  dnsNames:
+    - {{ .Values.general.override_domain }}
+  issuerRef:
+    name: {{ .Values.certificates.tls.cluster_issuer }}
+    kind: ClusterIssuer
+{{- end -}}

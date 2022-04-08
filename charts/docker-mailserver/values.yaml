@@ -1,0 +1,101 @@
+# Default values for docker-mailserver.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/docker-mailserver/docker-mailserver
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 10.5.0
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+general:
+  domain: example.com
+  override_domain: mail.example.com
+
+ldap:
+  enabled: true
+  host:
+  search_base:
+  bind_dn:
+  bind_pwd:
+
+certificates:
+  tls:
+    enabled: true
+    cluster_issuer: letsencrypt-staging
+  dkim:
+    # figure out how to configure this using docker-mailserver first
+    # https://documentation.n-able.com/spamexperts/userguide/Content/C_Domain%20Level/outgoing/generate-dkim-certificate.htm
+    # public portion should be set as a DNS record
+    # should be able to just pass the entire private key file to this value
+    # and then set the correct DKIM record with the public portion
+    private: TODO
+
+podAnnotations: {}
+
+podSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false
+  privileged: false
+  capabilities:
+    add:
+      # file permission capabilities
+      - CHOWN
+      - FOWNER
+      - MKNOD
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+      # network capabilities
+      - NET_ADMIN # needed for F2B
+      - NET_RAW # needed for F2B
+      - NET_BIND_SERVICE
+      # miscellaneous  capabilities
+      - SYS_CHROOT
+      - SYS_PTRACE
+      - KILL
+    drop: [ALL]
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext: {}
+
+persistence:
+  accessMode: ReadWriteOnce
+  space: 25Gi
+
+service:
+  type: LoadBalancer
+
+resources:
+  limits:
+    memory: 4Gi
+    cpu: 1500m
+  requests:
+    memory: 2Gi
+    cpu: 600m
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

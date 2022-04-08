@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "docker-mailserver.fullname" . }}
+  labels:
+    {{- include "docker-mailserver.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "docker-mailserver.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "docker-mailserver.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        {{- include "docker-mailserver.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        securityContext:
+          {{- toYaml .Values.podSecurityContext | nindent 10 }}
+        envFrom:
+          - configMapRef:
+              name: {{ include "docker-mailserver.fullname" . }}
+        ports:
+          - name: transfer
+            containerPort: 25
+            protocol: TCP
+          - name: esmtp-implicit
+            containerPort: 465
+            protocol: TCP
+          - name: esmtp-explicit
+            containerPort: 587
+          - name: imap-implicit
+            containerPort: 993
+            protocol: TCP
+        volumeMounts:
+          - name: dkim
+            mountPath: /tmp/docker-mailserver/dms/config/opendkim/keys/{{ .Values.general.domain }}
+            readOnly: true
+          - name: certs
+            mountPath: /certs
+            redOnly: true
+          - name: data
+            mountPath: /var/mail
+            subPath: data
+            readOnly: false
+          - name: data
+            mountPath: /var/mail-state
+            subPath: state
+            readOnly: false
+          - name: data
+            mountPath: /var/log/mail
+            subPath: log
+            readOnly: false
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: certs
+          secretRef:
+            name: {{ .Values.certificates.tls.domain }}-tls
+        # - name: dkim
+        #   secretRef:
+        #     name: {{ .Values.certificates.tls.domain }}-dkim
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "{{ .Values.persistence.accessMode }}" ]
+      resources:
+        requests:
+          storage: '{{ .Values.persistence.space }}'
