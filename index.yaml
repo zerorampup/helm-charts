@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  certificate:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-04-14T18:56:07.337432989Z"
+    description: Create a certificate for cert-manager
+    digest: c4e26d018845a2175e5a295e0adc09f3c21ac145687aa44da7c9d227b82a3e2d
+    name: certificate
+    type: application
+    urls:
+    - https://github.com/zerorampup/helm-charts/releases/download/certificate-0.0.1/certificate-0.0.1.tgz
+    version: 0.0.1
   docker-mailserver:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -164,4 +175,4 @@ entries:
     urls:
     - https://github.com/zerorampup/helm-charts/releases/download/mailserver-1.0.0/mailserver-1.0.0.tgz
     version: 1.0.0
-generated: "2022-04-08T20:22:48.915330062Z"
+generated: "2022-04-14T18:56:07.337470189Z"
