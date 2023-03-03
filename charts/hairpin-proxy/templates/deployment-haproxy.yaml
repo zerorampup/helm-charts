@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hairpin-proxy.fullname" . }}-haproxy
+  labels:
+    {{- include "hairpin-proxy.labels" . | nindent 4 }}
+    instance: haproxy
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "hairpin-proxy.selectorLabels" . | nindent 6 }}
+      instance: haproxy
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "hairpin-proxy.selectorLabels" . | nindent 8 }}
+        instance: haproxy
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "hairpin-proxy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.haproxyImage.repository }}:{{ .Values.haproxyImage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.haproxyImage.pullPolicy }}
+          env:
+            - name: TARGET_SERVER
+              value: {{ .Values.targetServer }}
+          resources:
+            {{- toYaml .Values.haproxyResources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

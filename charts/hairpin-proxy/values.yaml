@@ -1,0 +1,66 @@
+# Default values for hairpin-proxy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+haproxyImage:
+  repository: compumike/hairpin-proxy-haproxy
+  pullPolicy: IfNotPresent
+  tag: ""
+
+image:
+  repository: compumike/hairpin-proxy-controller
+  pullPolicy: IfNotPresent
+  tag: ""
+
+targetServer: ingress-ingress-nginx-controller.kube-system.svc.cluster.local
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  requests:
+    memory: "50Mi"
+    cpu: "10m"
+  limits:
+    memory: "100Mi"
+    cpu: "50m"
+
+haproxyResources:
+  requests:
+    memory: "100Mi"
+    cpu: "10m"
+  limits:
+    memory: "200Mi"
+    cpu: "50m"
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
